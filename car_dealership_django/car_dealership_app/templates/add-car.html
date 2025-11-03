@@ -1,0 +1,45 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="brand">Brand</label>
+    <input id="brand" name="brand" type="text">
+
+    <label for="model">Model</label>
+    <input id="model" name="model" type="text">
+
+    <label for="gear_type">Gear Type</label>
+    <select id="gear_type" name="gear_type">
+        <option value="">---Select a gear type---</option>
+        <option value="Automatic">Automatic</option>
+        <option value="Manual">Manual</option>
+    </select>
+
+    <label for="fuel_type">Fuel Type</label>
+    <select id="fuel_type" name="fuel_type">
+        <option value="">---Select a fuel type---</option>
+        <option value="Gasoline">Gasoline</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Electric">Electric</option>
+        <option value="Hybrid">Hybrid</option>
+    </select>
+
+    <label for="color">Color</label>
+    <input id="color" name="color" type="text">
+
+    <label for="year">Year</label>
+    <input id="year" name="year" type="number">
+
+    <label for="price">Price</label>
+    <input id="price" name="price" type="number">
+
+    <label for="car_image" class="mt-3">Araba Resmi Yükle</label>
+    <input id="car_image" name="car_image" type="file" accept="image/*" class="form-control" required>
+
+    <button type="submit">Add Car</button>
+</form>
+
+{%endblock%}

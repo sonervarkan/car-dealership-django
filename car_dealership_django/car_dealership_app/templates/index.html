@@ -1,0 +1,183 @@
+{%extends 'base.html'%}
+
+{% load static %}
+
+{%block content%}
+<style>
+    .box{
+        display:flex;
+        justify-content:space-between;
+    }
+
+    .slider-container {
+        display:flex;
+        flex-direction:column;
+        width:50%; 
+        height:400px; 
+        font-size:14px;
+    }
+    .slider-container #slider-image{
+        width:100%;
+        height:400px;
+    }
+
+    .filter{
+        display:flex;
+        flex-direction:column;
+        width:20%;
+        font-size:18px;
+    }
+</style>
+
+<!--
+<div class="col-md-8">
+    {% for image in images %}
+        <img src="{{ image.img_url.url }}" alt="Car image" style="max-width: 400px;">
+    {% endfor %}
+</div>
+-->
+<div class="box">
+    <div class="filter">
+        <select class="brand-select" name="brand">
+            <option value="">---Select a Brand---</option>
+            {% for brand in brands %}
+                <option value="{{ brand }}">{{ brand }}</option>
+            {% endfor %}
+        </select>
+        <select class="model-select" name="model">
+            <option value="">---Select a Model---</option>
+        </select>
+        <select class="gear_type" name="gear_type">
+            <option value="">---Select a Gear Type---</option>
+        </select>
+        <select class="fuel_type" name="fuel_type">
+            <option value="">---Select a Fuel Type---</option>
+        </select>
+        <select class="year-select" name="year">
+            <option value="">---Select a Year---</option>
+            
+        </select>
+    </div>
+
+    <div class="slider-container">
+        <img id="slider-image" src="">
+        <p class="brand" ></p>
+        <p class="model"></p>
+        <p class="year"></p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    // SLIDER
+    const vehicles = [
+        {% for item in items %}
+            {
+                brand: "{{ item.car.brand }}",
+                model: "{{ item.car.model }}",
+                year: "{{ item.car.year }}",
+                images: [
+                    {% for img in item.images %}
+                        "{{ img.img_url.url }}"
+                    {% endfor %}
+                ]
+            },
+        {% endfor %}
+    ];
+
+    // FILTER KISIMLARI
+    // GET MODELS BY BRAND   
+    $(".brand-select").on("change", function() {
+        const brand = $(this).val();
+        const $model = $(".model-select");
+
+        $(".model-select").empty().append(`<option value=""> ---Select a Model--- </option>`);
+
+        if (brand) {
+            $.ajax({
+                url: "/get_models_by_brand/",
+                data: { brand: brand },
+                success: function(models) {
+                    $.each(models, function(i, m) {
+                        $model.append(`<option value="${m}">${m}</option>`);
+                    });
+                },
+                error: function() {
+                    console.error("Modeller alınamadı");
+                }
+            });
+        }
+    });
+
+    // GET GEAR TYPE BY BRAND AND MODEL
+    $(".model-select").on("change", function(){
+        const model=$(this).val();
+        const brand=$(".brand-select").val();
+
+        $(".gear_type").empty().append(`<option value="">---Select a Gear Type</option>`);
+
+        if(model&&brand){
+            $.ajax({
+                url:"/get_gear_type_by_model_brand",
+                data:{model:model, brand:brand},
+                success: function(gear_types){
+                    $.each(gear_types, function(i,gt){
+                        $(".gear_type").append(`<option value="${gt}">${gt}</option>`);
+                    });
+                }, error: function(){
+                    (console.error("Gear type could not be obtained"))
+                }
+            });
+        }
+    });
+
+    // GET FUEL TYPE BY BRAND MODEL GEAR TYPE
+    $(".gear_type").on("change",function(){
+        const gear_type=$(this).val();
+        const brand=$(".brand-select").val();
+        const model=$(".model-select").val();
+
+        $(".fuel_type").empty().append(`<option value="">---Select a Fuel Type---</option>`)
+
+        if(gear_type&&brand&&model){
+            $.ajax({
+                url:"/get_fuel_type_by_brand_model_gear_type",
+                data:{gear_type:gear_type,brand:brand,model:model},
+                success: function(fuel_types){
+                    $.each(fuel_types, function(i,ft){
+                        $(".fuel_type").append(`<option value="${ft}">${ft}</option>`);
+                    });
+                }, error: function(){
+                    console.error("Fuel type couldn't be obtained");
+                }
+            });
+        }
+    });
+
+    // YEAR LIST & FILTER RESULTS
+   
+    $(".fuel_type").on("change", function() {
+        const brand = $(".brand-select").val();
+        const model = $(".model-select").val();
+        const gear_type = $(".gear_type").val();
+        const fuel_type = $(this).val();
+        const $yearSelect = $(".year-select");
+
+        $yearSelect.empty().append('<option value="">---Select a Year---</option>');
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear; y >= 1980; y--) {
+            $yearSelect.append(`<option value="${y}">${y}</option>`);
+        }
+
+        $yearSelect.on("change", function() {
+            const year = $(this).val();
+            if (brand && model && gear_type && fuel_type && year) {
+                window.location.href = `/get_filter_results/?brand=${brand}&model=${model}&gear_type=${gear_type}&fuel_type=${fuel_type}&year=${year}`;
+            }
+        });
+    });
+   
+</script>
+<script src="{% static 'car_dealership_app/script/slider.js' %}"></script>
+
+
+{%endblock%}

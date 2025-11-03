@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Filtered Cars</h2>
+
+{% if filter_cars %}
+    <div class="filtered-cars">
+        {% for item in filter_cars %}
+            <div class="car-card">
+                <h3>{{ item.car.brand }} {{ item.car.model }}</h3>
+                <p>
+                    Gear Type: {{ item.car.gear_type }} <br>
+                    Fuel Type: {{ item.car.fuel_type }} <br>
+                    Year: {{ item.car.year }}
+                </p>
+
+                {% if item.images %}
+                    <div class="car-images">
+                        {% for img in item.images %}
+                            <img src="{{ img.img_url.url }}" alt="{{ item.car.model }}" style="width:200px;height:auto;border-radius:8px;margin:5px;">
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p><em>No images available.</em></p>
+                {% endif %}
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No cars found for the selected filters.</p>
+{% endif %}
+
+<a href="/" class="btn btn-primary">Back to Filters</a>
+{% endblock %}
