@@ -107,17 +107,17 @@ car_dealership_django/
 │   │           └── slider.js
 │   │
 │   ├── templates/
-│   │   └── car_dealership_app/
-│   │       ├── index.html
-│   │       ├── base.html
-│   │       ├── add-car.html
-│   │       ├── filter-results.html
-│   │       └── registration/
-│   │           ├── login.html
-│   │           └── register.html
+│       ├── index.html
+│       ├── base.html
+│       ├── add-car.html
+│       ├── filter-results.html
+│       └── registration/
+│           ├── login.html
+│           └── register.html
 │
 ├── manage.py
-└── requirements.txt  (opsiyonel)
+
+
 
 ````
 ## Installation & Setup
