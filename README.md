@@ -82,28 +82,43 @@ Authentication	Django Auth System
 car_dealership_django/
 │
 ├── car_dealership_django/
-│   ├── settings.py      # Django settings (MySQL + Cloudinary)
-│   ├── urls.py          # Core URL routes
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   ├── wsgi.py
 │
 ├── car_dealership_app/
-│   ├── models.py        # Car & Image models
-│   ├── views.py         # All business logic
-│   ├── urls.py          # App routes
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── apps.py
+│   ├── admin.py
+│   ├── migrations/
 │   ├── static/
-│   │   ├── css/
-│   │   ├── script/
+│   │   └── car_dealership_app/
+│   │       ├── css/
+│   │       │   ├── filter.css
+│   │       │   ├── main.css
+│   │       │   ├── navbar.css
+│   │       │   └── slider.css
+│   │       └── script/
+│   │           ├── filter.js
+│   │           ├── script.js
+│   │           └── slider.js
+│   │
 │   ├── templates/
-│       ├── index.html
-│       ├── add-car.html
-│       ├── filter-results.html
-│       ├── registration/
-│           ├── login.html
-│           ├── register.html
-│       ├── base.html
+│   │   └── car_dealership_app/
+│   │       ├── index.html
+│   │       ├── base.html
+│   │       ├── add-car.html
+│   │       ├── filter-results.html
+│   │       └── registration/
+│   │           ├── login.html
+│   │           └── register.html
 │
-└── static/
-    ├── car_dealership_app/css/
-    ├── car_dealership_app/script/
+├── manage.py
+└── requirements.txt  (opsiyonel)
+
 ````
 ## Installation & Setup
 1️⃣ Clone the repository
